@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllHistory } from '../services/allAPI'
+import { deleteHistory, getAllHistory } from '../services/allAPI'
 
 function History() {
   const [history,setHistory] = useState([])
@@ -13,6 +13,13 @@ function History() {
   useEffect(()=>{
     handleHistory()
   },[])
+
+  const handleDeleteHistory = async (id) =>{
+      // make api call
+      await deleteHistory(id)
+      // get remaining history
+      handleHistory()
+  }
 
   return (
     <>
@@ -28,16 +35,18 @@ function History() {
             <th>Caption</th>
             <th>URL</th>
             <th>Time Stamp</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {
-            history?history?.map((item,index)=>(
+            history?.length>0?history?.map((item,index)=>(
               <tr key={index}>
                 <td>{index+1}</td>
                 <td>{item?.caption}</td>
                 <td><a href={item?.embedLink} target='_blank'>{item?.embedLink}</a></td>
                 <td>{item?.timeStamp}</td>
+                <td><button className='btn border-0' onClick={()=>handleDeleteHistory(item?.id)}><i className='fa-solid fa-trash text-danger'></i></button></td>
               </tr>
             )):<p className='fw-bold fs-5 text-bg-danger'>Nothing to display!!!</p>
           }

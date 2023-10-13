@@ -33,7 +33,7 @@ export const addToHistory = async (videoDetails) => {
 }
 
 // get all watching video history from json server
-export const getAllHistory = async (videoDetails) => {
+export const getAllHistory = async () => {
     // make get http request to http://localhost:4000/history to get all video history in json server and return response to History component
     return await commonAPI("GET",`${serverURL}/history`,"")
 }
@@ -60,4 +60,10 @@ export const deleteCategory = async (id)=>{
 export const updateCategory = async (id,body)=>{
     // make put http request to http://localhost:4000/category to update category from json server and return response to Category component
     return await commonAPI("PUT",`${serverURL}/category/${id}`,body)
+}
+
+// delete watching history  from json server
+export const deleteHistory = async (id)=>{
+    // make put http request to http://localhost:4000/history/id to delete video history from json server and return response to History component
+    return await commonAPI("DELETE",`${serverURL}/history/${id}`,{})
 }
