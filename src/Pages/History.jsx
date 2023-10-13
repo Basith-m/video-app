@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getAllHistory } from '../services/allAPI'
 
 function History() {
+  const [history,setHistory] = useState([])
+  const handleHistory = async ()=>{
+    // make API call
+    const {data} = await getAllHistory()
+    setHistory(data)
+  }
+  // console.log(history);
+  useEffect(()=>{
+    handleHistory()
+  },[])
+
   return (
     <>
       <div className='container d-flex mt-5 mb-5 justify-content-between align-items-center'>
@@ -19,12 +31,16 @@ function History() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Akhil</td>
-            <td><a href="http://vbusdfgishgsihischsgcwhfhfh"></a>http://vbusdfgishgsihischsgcwhfhfh</td>
-            <td>5/9/23</td>
-          </tr>
+          {
+            history?history?.map((item,index)=>(
+              <tr key={index}>
+                <td>{index+1}</td>
+                <td>{item?.caption}</td>
+                <td><a href={item?.embedLink} target='_blank'>{item?.embedLink}</a></td>
+                <td>{item?.timeStamp}</td>
+              </tr>
+            )):<p className='fw-bold fs-5 text-bg-danger'>Nothing to display!!!</p>
+          }
         </tbody>
       </table>
     </>

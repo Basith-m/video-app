@@ -1,13 +1,24 @@
 import { Card,Modal } from 'react-bootstrap'
 import { useState } from 'react';
-import { deleteAVideos } from '../services/allAPI';
+import { addToHistory, deleteAVideos } from '../services/allAPI';
 
 function VideoCard({displayData,setDeleteVideoStatus}) {
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = async () => {
+    setShow(true);
+    // make api call http://localhost:4000/history
+    const {caption,embedLink} = displayData
+    let today = new Date()
+    let timeStamp = new Intl.DateTimeFormat('en-us',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(today)
+
+    let videoDetails = {
+      caption,embedLink,timeStamp
+    }
+    await addToHistory(videoDetails)
+  }
 
   // deleting a video
   const removeVideo = async (id)=>{
@@ -15,10 +26,15 @@ function VideoCard({displayData,setDeleteVideoStatus}) {
     const response = await deleteAVideos(id)
     setDeleteVideoStatus(true)
   }
+
+  const dragStarted = (e,id) =>{
+    console.log("Drag Started... Video Id : "+id);
+    e.dataTransfer.setData("videoId",id)
+  }
   
   return (
     <>
-      <Card className='mb-3'>
+      <Card className='mb-3' draggable onDragStart={(e)=>dragStarted(e,displayData?.id)}>
       <Card.Img variant="top" height={'180px'} onClick={handleShow} src={displayData?.url} />
       <Card.Body>
         <Card.Title className='d-flex justify-content-between align-items-center'>
