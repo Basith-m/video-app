@@ -9,7 +9,7 @@ export const uploadVideo = async (reqBody)=>{
 
 // get all videos from json server
 export const getAllVideos = async ()=>{
-    // make post http request to http://localhost:4000/videos to get all videos from json server and return response to View component
+    // make get http request to http://localhost:4000/videos to get all videos from json server and return response to View component
     return await commonAPI("GET",`${serverURL}/videos`,"")
 }
 

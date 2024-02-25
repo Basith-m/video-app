@@ -27,10 +27,7 @@ function Add({setUploadVideoServerResponse}) {
     else{
       setVideo({...video,embedLink:""})
     }
-    
   }
-
-  console.log(video);
 
   const handleUpload = async () =>{
     const {id,caption,url,embedLink} = video
@@ -41,7 +38,7 @@ function Add({setUploadVideoServerResponse}) {
     else{
       // make API call uploadVideo
       const response = await uploadVideo(video)
-      console.log(response);
+      // console.log(response);
       if(response.status>200 && response.status<300){
 
         // success message
